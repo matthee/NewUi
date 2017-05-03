@@ -6,7 +6,7 @@ apply from: 'gradle/intelij_tasks.gradle'
 
 android {
     compileSdkVersion 25
-    buildToolsVersion "25.0.0"
+    buildToolsVersion "25.0.3"
     defaultConfig {
         applicationId "org.catroid.catrobat.newui"
         minSdkVersion 16
