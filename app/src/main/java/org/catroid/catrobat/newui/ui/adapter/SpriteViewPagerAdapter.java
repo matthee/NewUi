@@ -4,6 +4,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v7.app.AppCompatActivity;
 
+import org.catroid.catrobat.newui.ui.featureDiscovery.SpriteViewFeatureDiscoveryFactory;
 import org.catroid.catrobat.newui.ui.fragment.BaseRecyclerListFragment;
 import org.catroid.catrobat.newui.ui.fragment.LookListFragment;
 import org.catroid.catrobat.newui.ui.fragment.SoundListFragment;

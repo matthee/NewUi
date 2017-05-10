@@ -22,8 +22,21 @@ public class Sprite implements Serializable, Cloneable {
         return name;
     }
 
+
+    public void setLookList (List<LookInfo> lookInfoList) {
+        if (lookInfoList != null) {
+            mLookList = lookInfoList;
+        }
+    }
+
     public List<LookInfo> getLookList() {
         return mLookList;
+    }
+
+    public void setSoundList(List<SoundInfo> soundInfoList) {
+        if (soundInfoList != null) {
+            mSoundList = soundInfoList;
+        }
     }
 
     public List<SoundInfo> getSoundList() {

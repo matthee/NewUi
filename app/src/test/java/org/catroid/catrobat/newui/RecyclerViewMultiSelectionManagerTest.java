@@ -19,7 +19,7 @@ public class RecyclerViewMultiSelectionManagerTest {
 
         manager.setSelected(item, true);
 
-        assertTrue(manager.getSelected(item));
+        assertTrue(manager.getIsSelected(item));
     }
 
     @Test
@@ -29,11 +29,11 @@ public class RecyclerViewMultiSelectionManagerTest {
 
         manager.setSelected(item, true);
 
-        assertTrue(manager.getSelected(item));
+        assertTrue(manager.getIsSelected(item));
 
         manager.setSelected(item, false);
 
-        assertFalse(manager.getSelected(item));
+        assertFalse(manager.getIsSelected(item));
 
     }
 
@@ -105,15 +105,15 @@ public class RecyclerViewMultiSelectionManagerTest {
         RecyclerViewMultiSelectionManager<ListItem> manager = createManager();
         ListItem item = createListItem();
 
-        assertFalse(manager.getSelected(item));
+        assertFalse(manager.getIsSelected(item));
 
         manager.toggleSelected(item);
 
-        assertTrue(manager.getSelected(item));
+        assertTrue(manager.getIsSelected(item));
 
         manager.toggleSelected(item);
 
-        assertFalse(manager.getSelected(item));
+        assertFalse(manager.getIsSelected(item));
 
     }
 

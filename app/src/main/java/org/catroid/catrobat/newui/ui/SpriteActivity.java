@@ -1,6 +1,7 @@
 package org.catroid.catrobat.newui.ui;
 
 import android.Manifest;
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
@@ -15,6 +16,7 @@ import android.view.View;
 
 import org.catroid.catrobat.newui.R;
 import org.catroid.catrobat.newui.ui.adapter.SpriteViewPagerAdapter;
+import org.catroid.catrobat.newui.ui.featureDiscovery.SpriteViewFeatureDiscoveryFactory;
 
 public class SpriteActivity extends AppCompatActivity {
 
@@ -32,18 +34,16 @@ public class SpriteActivity extends AppCompatActivity {
 
         mSpriteViewPagerAdapter = new SpriteViewPagerAdapter(this);
 
+        final AppCompatActivity activity = this;
+
         mViewPager = (ViewPager) findViewById(R.id.pager);
         mViewPager.setAdapter(mSpriteViewPagerAdapter);
-        mViewPager
-                .addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
-
-                    @Override
-
-                    public void onPageSelected(int position) {
-                        mSpriteViewPagerAdapter.onPageSelected(position);
-                    }
-
-                });
+        mViewPager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
+            @Override
+            public void onPageSelected(int position) {
+                mSpriteViewPagerAdapter.onPageSelected(position);
+            }
+        });
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -53,16 +53,15 @@ public class SpriteActivity extends AppCompatActivity {
             }
         });
 
-
         ActivityCompat.requestPermissions(SpriteActivity.this, new String[]
                 {Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
-
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.main_menu, menu);
+
         return true;
     }
 

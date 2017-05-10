@@ -37,7 +37,7 @@ public abstract class InputDialog extends AppCompatDialogFragment {
 
         builder.setTitle(getArguments().getInt(TITLE));
 
-        LayoutInflater inflater = getActivity().getLayoutInflater();
+        final LayoutInflater inflater = getActivity().getLayoutInflater();
         View view = inflateLayout(inflater);
 
         builder.setView(view);
@@ -47,6 +47,7 @@ public abstract class InputDialog extends AppCompatDialogFragment {
         input = (EditText) view.findViewById(R.id.input);
 
         builder.setPositiveButton(getArguments().getInt(POSITIVE_BUTTON), null);
+
         builder.setNegativeButton(getArguments().getInt(NEGATIVE_BUTTON),
                 new DialogInterface.OnClickListener() {
                     @Override
@@ -71,6 +72,10 @@ public abstract class InputDialog extends AppCompatDialogFragment {
                 });
                 if (!allowEmptyInput) {
                     input.addTextChangedListener(getInputTextWatcher(buttonPositive));
+
+                    if (input.getText().length() == 0) {
+                        buttonPositive.setEnabled(false);
+                    }
                 }
             }
         });
@@ -97,6 +102,7 @@ public abstract class InputDialog extends AppCompatDialogFragment {
             imm.showSoftInput(input, InputMethodManager.SHOW_IMPLICIT);
         }
     }
+
 
     protected TextWatcher getInputTextWatcher(final Button positiveButton) {
         return new TextWatcher() {

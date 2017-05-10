@@ -1,9 +1,8 @@
 package org.catroid.catrobat.newui.data.serialization;
-
-import org.catroid.catrobat.newui.data.ProjectItem;
+import org.catroid.catrobat.newui.data.Project;
 
 public class ProjectSerializer {
-    public String serializeProject(ProjectItem project) {
-
+    public String serializeProject(Project project) {
+        return "";
     }
 }

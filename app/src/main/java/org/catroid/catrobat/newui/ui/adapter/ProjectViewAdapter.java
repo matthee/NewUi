@@ -9,21 +9,21 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 
 import org.catroid.catrobat.newui.R;
-import org.catroid.catrobat.newui.data.ProjectItem;
+import org.catroid.catrobat.newui.data.Project;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class ProjectViewAdapter extends BaseAdapter {
 
-    private List<ProjectItem> mProjectItems = new ArrayList<>();
+    private List<Project> mProjectItems = new ArrayList<>();
 
     public ProjectViewAdapter() {
     }
 
     public Boolean addItem(int id, Bitmap image, String infoText) {
         try {
-            mProjectItems.add(new ProjectItem(id, image, infoText));
+            mProjectItems.add(new Project(id, image, infoText));
             return true;
         } catch (Exception exception) {
             Log.wtf("EXCEPTION ", exception.getMessage());
