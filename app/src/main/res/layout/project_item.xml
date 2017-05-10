@@ -1,19 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     android:orientation="horizontal">
 
     <ImageView
         android:id="@+id/project_image_view"
-        android:layout_width="@dimen/list_item_image_size"
-        android:layout_height="@dimen/list_item_image_size" />
+        android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        android:background="#000000"/>
+
 
     <TextView
         android:id="@+id/project_title_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="@dimen/list_item_header" />
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentBottom="true"
+        android:paddingLeft="16dp"
+        android:textColor="@color/white"
+        android:text="TEST 123"
+        android:textSize="@dimen/list_item_header"/>
 
 
-</LinearLayout>
+
+</RelativeLayout>

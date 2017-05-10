@@ -8,6 +8,8 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
@@ -16,14 +18,19 @@ import android.widget.GridView;
 import android.widget.Toast;
 
 import org.catroid.catrobat.newui.R;
+import org.catroid.catrobat.newui.data.Constants;
+import org.catroid.catrobat.newui.data.ProjectItem;
 import org.catroid.catrobat.newui.ui.adapter.ProjectViewAdapter;
 import org.catroid.catrobat.newui.ui.adapter.WebViewManager;
+
+import java.util.ArrayList;
 
 public class ProjectActivity extends AppCompatActivity {
 
     private WebView mWebView;
     private GridView mGridView;
     private ProjectViewAdapter mProjectViewAdapter;
+    private ArrayList<ProjectItem> mProjectItems = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,32 +49,50 @@ public class ProjectActivity extends AppCompatActivity {
 
         mWebView = (WebView) findViewById(R.id.webview);
         try {
-            if (!(WebViewManager.loadFromURL(mWebView, "https://www.catrobat.org/", this))) {
-                Toast.makeText(this, "NOT connected !!!", Toast.LENGTH_LONG).show();
+            if (!(WebViewManager.loadFromURL(mWebView, Constants.PROJECT_NEWS_URL, this))) {
+                Toast.makeText(this, "No Internet Connection", Toast.LENGTH_LONG).show();
             } else {
-                Toast.makeText(this, "Connected !!!", Toast.LENGTH_LONG).show();
+                DisplayMetrics mDisplayMetrics = new DisplayMetrics();
+                getWindowManager().getDefaultDisplay().getMetrics(mDisplayMetrics);
+
+                mWebView.getLayoutParams().height = mDisplayMetrics.heightPixels / 4;
+
+
             }
         } catch (Exception exception) {
-            mWebView.setVisibility(View.INVISIBLE);
+            mWebView.setVisibility(View.GONE);
+            mWebView.getLayoutParams().height = 0;
             Toast.makeText(this, "NOT connected !!!", Toast.LENGTH_LONG).show();
         }
 
-        mProjectViewAdapter = new ProjectViewAdapter();
 
-        for (int i = 0; i < 7; i++) {
-            Bitmap image = BitmapFactory.decodeResource(this.getResources(),
-                    R.drawable.blue_square);
-            String text = "Item " + i;
-            mProjectViewAdapter.addItem(R.drawable.blue_square, image, text);
-        }
+        Constants.PROJECT_IMAGE_SIZE = getSizeForGridViewImages();
+
+        mProjectViewAdapter = new ProjectViewAdapter(this, R.layout.project_item, mProjectItems);
 
         mGridView = (GridView) findViewById(R.id.project_gridview);
         mGridView.setAdapter(mProjectViewAdapter);
+
+        // Fill in Test-Data
+        for (int i = 0; i < 12; i++) {
+            String text = "Item " + i;
+            if(addNewProjectItem(R.drawable.blue_test_pic, text))
+            {
+                mProjectViewAdapter.notifyDataSetChanged();
+            }
+            else
+            {
+                Toast.makeText(this, "Could not add File: " + text, Toast.LENGTH_LONG).show();
+            }
+        }
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                Toast.makeText(getApplicationContext(), "Replace with Action",
+                        Toast.LENGTH_LONG).show();
             }
         });
     }
@@ -78,4 +103,35 @@ public class ProjectActivity extends AppCompatActivity {
         inflater.inflate(R.menu.main_menu, menu);
         return true;
     }
+
+    private int getSizeForGridViewImages()
+    {
+        DisplayMetrics mDisplayMetrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(mDisplayMetrics);
+
+        float density = getApplicationContext().getResources().getDisplayMetrics().density;
+        float dp = (mDisplayMetrics.widthPixels * 1.5f) / density;
+
+        return (int) dp;
+    }
+
+    private Boolean addNewProjectItem(int res_id, String project_info) {
+
+        try {
+            Bitmap image = BitmapFactory.decodeResource(this.getResources(),
+                    res_id);
+            Bitmap.createScaledBitmap(image, Constants.PROJECT_IMAGE_SIZE,
+                    Constants.PROJECT_IMAGE_SIZE, false);
+
+            mProjectItems.add(mProjectItems.size(), new ProjectItem(image, project_info));
+        }
+        catch (Exception ex)
+        {
+            Log.wtf("ADD NEW PROJECT ", ex.getMessage());
+            return false;
+        }
+
+        return true;
+    }
+
 }

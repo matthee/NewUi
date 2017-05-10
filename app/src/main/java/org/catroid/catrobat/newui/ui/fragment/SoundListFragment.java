@@ -37,6 +37,12 @@ public class SoundListFragment extends BaseRecyclerListFragment<SoundInfo> {
         return new SoundAdapter(new ArrayList<SoundInfo>(), R.layout.list_item);
     }
 
+
+    @Override
+    protected String getItemName(SoundInfo item) {
+        return item.getName();
+    }
+
     @Override
     protected SoundInfo copyItem(SoundInfo item) throws Exception {
         String name = Utils.getUniqueSoundName(item.getName(), mRecyclerViewAdapter.getItems());

@@ -1,73 +1,64 @@
 package org.catroid.catrobat.newui.ui.adapter;
 
-import android.graphics.Bitmap;
-import android.util.Log;
+import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import org.catroid.catrobat.newui.R;
-import org.catroid.catrobat.newui.data.Project;
+import org.catroid.catrobat.newui.data.Constants;
+import org.catroid.catrobat.newui.data.ProjectItem;
 
 import java.util.ArrayList;
-import java.util.List;
 
-public class ProjectViewAdapter extends BaseAdapter {
+public class ProjectViewAdapter extends ArrayAdapter {
 
-    private List<Project> mProjectItems = new ArrayList<>();
+    private ArrayList<ProjectItem> objects;
 
-    public ProjectViewAdapter() {
+    public ProjectViewAdapter(Context context,
+                              int textViewResourceId,
+                              ArrayList<ProjectItem> objects) {
+        super(context, textViewResourceId, objects);
+
+        this.objects = objects;
     }
 
-    public Boolean addItem(int id, Bitmap image, String infoText) {
-        try {
-            mProjectItems.add(new Project(id, image, infoText));
-            return true;
-        } catch (Exception exception) {
-            Log.wtf("EXCEPTION ", exception.getMessage());
-            return false;
-        }
-    }
-
-    @Override
-    public int getCount() {
-        return 0;
-    }
-
-    @Override
-    public Object getItem(int position) {
-        return null;
-    }
-
-    @Override
-    public long getItemId(int position) {
-        return 0;
-    }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
+        View v = convertView;
 
-        LayoutInflater inflater = LayoutInflater.from(parent.getContext());
+        if (v == null) {
+            LayoutInflater inflater = (LayoutInflater) getContext()
+                    .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-        View gridView;
-
-        if (convertView == null) {
-
-            // get layout from mobile.xml
-            gridView = inflater.inflate(R.layout.project_item, null);
-
-            // set image based on selected text
-            ImageView imageView = (ImageView) gridView
-                    .findViewById(R.id.project_image_view);
-
-            imageView.setImageResource(mProjectItems.get(position).getId());
-
-        } else {
-            gridView = convertView;
+            v = inflater.inflate(R.layout.project_item, null);
         }
 
-        return gridView;
+        ProjectItem tmp = objects.get(position);
+
+        if (tmp != null) {
+            ImageView imgView = (ImageView) v.findViewById(R.id.project_image_view);
+            TextView txtView = (TextView) v.findViewById(R.id.project_title_view);
+
+            if (imgView != null) {
+                imgView.getLayoutParams().height = Constants.PROJECT_IMAGE_SIZE;
+                imgView.getLayoutParams().width = Constants.PROJECT_IMAGE_SIZE;
+                imgView.setImageBitmap(tmp.getThumbnail());
+            }
+
+            if (txtView != null) {
+                txtView.setWidth(Constants.PROJECT_IMAGE_SIZE);
+                txtView.setBackgroundColor(Color.BLACK);
+                txtView.getBackground().setAlpha(123);
+                txtView.setText(tmp.getInfoText());
+            }
+        }
+
+        return v;
     }
 }

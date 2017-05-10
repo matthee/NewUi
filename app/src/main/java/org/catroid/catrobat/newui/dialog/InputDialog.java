@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatDialogFragment;
 import android.text.Editable;
@@ -24,6 +25,7 @@ public abstract class InputDialog extends AppCompatDialogFragment {
     protected static final String POSITIVE_BUTTON = "positive";
     protected static final String NEGATIVE_BUTTON = "negative";
     protected static final String ALLOW_EMPTY_INPUT = "allowEmptyInput";
+    protected static final String INITIAL_INPUT_VALUE = "initialInputValue";
 
     protected EditText input;
     protected boolean allowEmptyInput;
@@ -45,6 +47,8 @@ public abstract class InputDialog extends AppCompatDialogFragment {
                 .getInt(INPUT_LABEL));
 
         input = (EditText) view.findViewById(R.id.input);
+
+        input.setText(getArguments().getString(INITIAL_INPUT_VALUE));
 
         builder.setPositiveButton(getArguments().getInt(POSITIVE_BUTTON), null);
 

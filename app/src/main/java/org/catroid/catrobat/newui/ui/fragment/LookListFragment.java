@@ -63,6 +63,11 @@ public class LookListFragment extends BaseRecyclerListFragment<LookInfo>
     }
 
     @Override
+    protected String getItemName(LookInfo item) {
+        return item.getName();
+    }
+
+    @Override
     protected LookInfo copyItem(LookInfo item) throws Exception {
         String name = Utils.getUniqueLookName(item.getName(), mRecyclerViewAdapter.getItems());
         PathInfoFile pathInfo = StorageHandler.copyFile(item.getPathInfo());

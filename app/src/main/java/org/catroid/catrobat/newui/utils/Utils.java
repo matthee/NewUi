@@ -49,4 +49,25 @@ public final class Utils {
         }
         return newName;
     }
+
+    public static boolean isItemNameUnique(String itemName, List scope) {
+        Set<String> nameSet = new HashSet<>();
+        if(scope.size() > 0) {
+            if (scope.get(0) instanceof LookInfo) {
+                for (LookInfo item : (List<LookInfo>) scope) {
+                    nameSet.add(item.getName());
+                }
+            }
+            if (scope.get(0) instanceof SoundInfo) {
+                for (SoundInfo item : (List<SoundInfo>) scope) {
+                    nameSet.add(item.getName());
+                }
+            }
+        }
+        if (nameSet.contains(itemName)) {
+            return false;
+        }
+        return true;
+    }
+
 }
