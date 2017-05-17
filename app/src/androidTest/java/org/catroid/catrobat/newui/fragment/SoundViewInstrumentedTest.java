@@ -4,6 +4,7 @@ import android.support.test.rule.ActivityTestRule;
 
 import org.catroid.catrobat.newui.R;
 import org.catroid.catrobat.newui.ui.SpriteActivity;
+import org.catroid.catrobat.newui.utils.BaseActivityInstrumentationRule;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -11,7 +12,7 @@ import org.junit.Test;
 public class SoundViewInstrumentedTest {
     @Rule
     public ActivityTestRule<SpriteActivity> activityRule =
-            new ActivityTestRule<>(SpriteActivity.class);
+            new BaseActivityInstrumentationRule<>(SpriteActivity.class);
 
     @Before
     public void navigateToTab() {

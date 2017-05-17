@@ -1,4 +1,4 @@
-package org.catroid.catrobat.newui;
+package org.catroid.catrobat.newui.utils;
 
 import android.support.annotation.NonNull;
 import android.support.test.espresso.matcher.BoundedMatcher;
@@ -10,7 +10,7 @@ import org.hamcrest.Matcher;
 
 import static android.support.test.espresso.core.deps.guava.base.Preconditions.checkNotNull;
 
-public class Utils {
+public class TestUtils {
     public static Matcher<View> atPosition(final int position,
                                            @NonNull final Matcher<View> itemMatcher) {
 
