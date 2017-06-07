@@ -98,4 +98,56 @@ public class DataContract {
         }
     }
 
+    public static class LookEntry implements BaseColumns {
+        public static final Uri LOOKS_URI = BASE_CONTENT_URI.buildUpon().appendPath(PATH_LOOK).build();
+
+        public static final String TABLE_NAME = "looks";
+        public static final String COLUMN_NAME = "name";
+        public static final String COLUMN_FILENAME = "filename";
+        public static final String COLUMN_SPRITE_ID = "sprite_id";
+
+        public static Uri getLookUri(Sprite sprite) {
+            return getLookUri(sprite.getId());
+        }
+
+        public static Uri getLookUri(long id) {
+            return LOOKS_URI.buildUpon().appendPath(String.valueOf(id)).build();
+        }
+
+        public static String[] getFullProjection() {
+            return new String[]{
+                    _ID,
+                    COLUMN_NAME,
+                    COLUMN_FILENAME,
+                    COLUMN_SPRITE_ID
+            };
+        }
+    }
+
+    public static class SoundEntry implements BaseColumns {
+        public static final Uri SOUNDS_URI = BASE_CONTENT_URI.buildUpon().appendPath(PATH_SOUND).build();
+
+        public static final String TABLE_NAME = "sounds";
+        public static final String COLUMN_NAME = "name";
+        public static final String COLUMN_FILENAME = "filename";
+        public static final String COLUMN_SPRITE_ID = "sprite_id";
+
+        public static Uri getSoundUri(Sprite sprite) {
+            return getSoundUri(sprite.getId());
+        }
+
+        public static Uri getSoundUri(long id) {
+            return SOUNDS_URI.buildUpon().appendPath(String.valueOf(id)).build();
+        }
+
+        public static String[] getFullProjection() {
+            return new String[]{
+                    _ID,
+                    COLUMN_NAME,
+                    COLUMN_FILENAME,
+                    COLUMN_SPRITE_ID
+            };
+        }
+    }
+
 }

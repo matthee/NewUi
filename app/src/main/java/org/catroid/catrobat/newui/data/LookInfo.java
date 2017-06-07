@@ -9,13 +9,17 @@ import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
 
 import org.catroid.catrobat.newui.copypaste.CopyPasteable;
+import org.catroid.catrobat.newui.db.brigde.PersistableRecord;
 import org.catroid.catrobat.newui.io.PathInfoDirectory;
 import org.catroid.catrobat.newui.io.PathInfoFile;
 import org.catroid.catrobat.newui.io.StorageHandler;
 
 import java.io.Serializable;
 
-public class LookInfo extends ItemInfo implements Serializable, CopyPasteable {
+public class LookInfo extends ItemInfo implements Serializable, CopyPasteable, PersistableRecord {
+
+    private static final transient int THUMBNAIL_WIDTH = 80;
+    private static final transient int THUMBNAIL_HEIGHT = 80;
 
     //TODO: uncomment after XStream integration
     //@XStreamAsAttribute
@@ -23,6 +27,9 @@ public class LookInfo extends ItemInfo implements Serializable, CopyPasteable {
     private transient PathInfoFile mPathInfo;
     private transient int width;
     private transient int height;
+    private long mId;
+    private String mFilename;
+    private long mSpriteId;
 
     public LookInfo(String name, PathInfoFile pathInfo) {
         super(name);
@@ -31,6 +38,9 @@ public class LookInfo extends ItemInfo implements Serializable, CopyPasteable {
         fileName = pathInfo.getRelativePath();
 
         createThumbnail();
+    }
+
+    public LookInfo() {
     }
 
     public void initializeAfterDeserialize(PathInfoDirectory parent) {
@@ -95,5 +105,40 @@ public class LookInfo extends ItemInfo implements Serializable, CopyPasteable {
         cleanup();
     }
 
+    @Override
+    public void setId(long id) {
+        mId = id;
+    }
 
+    @Override
+    public long getId() {
+        return mId;
+    }
+
+    @Override
+    public void beforeDestroy() {
+
+    }
+
+    @Override
+    public void afterDestroy() {
+
+    }
+
+    public void setFilename(String filename) {
+        mFilename = filename;
+        mPathInfo = new PathInfoFile(StorageHandler.ROOT_DIRECTORY, filename);
+    }
+
+    public String getFilename() {
+        return mFilename;
+    }
+
+    public void setSpriteId(long spriteId) {
+        mSpriteId = spriteId;
+    }
+
+    public long getSpriteId() {
+        return mSpriteId;
+    }
 }

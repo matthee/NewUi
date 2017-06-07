@@ -1,12 +1,21 @@
 package org.catroid.catrobat.newui.ui.fragment;
 
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import org.catroid.catrobat.newui.R;
 import org.catroid.catrobat.newui.copypaste.Clipboard;
 import org.catroid.catrobat.newui.data.SoundInfo;
+import org.catroid.catrobat.newui.db.brigde.SceneBridge;
+import org.catroid.catrobat.newui.db.brigde.SoundBridge;
 import org.catroid.catrobat.newui.io.PathInfoFile;
 import org.catroid.catrobat.newui.io.StorageHandler;
+import org.catroid.catrobat.newui.ui.activity.SceneActivity;
+import org.catroid.catrobat.newui.ui.activity.SpriteDetailActivity;
+import org.catroid.catrobat.newui.ui.adapter.SceneAdapter;
 import org.catroid.catrobat.newui.ui.recyclerview.adapter.RecyclerViewAdapter;
 import org.catroid.catrobat.newui.ui.adapter.SoundAdapter;
 import org.catroid.catrobat.newui.utils.Utils;
@@ -18,6 +27,7 @@ public class SoundListFragment extends TabableFragment<SoundInfo> {
 
     public static final String TAG = SoundListFragment.class.getSimpleName();
     private static final String ARG_SECTION_NUMBER = "section_number_sound_list";
+    private SpriteDetailActivity mSpriteDetailActivity;
 
     public static SoundListFragment newInstance(int sectionNumber) {
         SoundListFragment fragment = new SoundListFragment();
@@ -29,18 +39,32 @@ public class SoundListFragment extends TabableFragment<SoundInfo> {
     }
 
     @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View view = super.onCreateView(inflater, container, savedInstanceState);
+
+        mSpriteDetailActivity = (SpriteDetailActivity) getActivity();
+
+        return view;
+    }
+
+    @Override
     public int getTabNameResource() {
         return R.string.tab_name_sounds;
     }
 
     @Override
     public RecyclerViewAdapter createAdapter() {
-        return new SoundAdapter(new ArrayList<SoundInfo>(), R.layout.list_item);
-    }
+        SoundBridge bridge = new SoundBridge(mSpriteDetailActivity);
+        SoundAdapter adapter = new SoundAdapter(mSpriteDetailActivity);
+
+        adapter.startLoading(bridge, mSpriteDetailActivity.getSpriteId());
+
+        return adapter;
+		}
 
     @Override
     protected void addToList(SoundInfo item) {
-        mRecyclerViewAdapter.addItem(item);
+        mRecyclerViewAdapter.insertItem(item);
     }
 
     @Override
@@ -75,6 +99,8 @@ public class SoundListFragment extends TabableFragment<SoundInfo> {
                 mRecyclerViewAdapter.getItems());
 
         SoundInfo soundInfo = new SoundInfo(uniqueSoundName, null);
+
+        soundInfo.setSpriteId(mSpriteDetailActivity.getSpriteId());
 
         return soundInfo;
     }

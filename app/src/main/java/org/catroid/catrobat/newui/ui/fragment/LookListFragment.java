@@ -4,16 +4,24 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import org.catroid.catrobat.newui.R;
 import org.catroid.catrobat.newui.copypaste.Clipboard;
 import org.catroid.catrobat.newui.data.LookInfo;
+import org.catroid.catrobat.newui.db.brigde.LookBridge;
+import org.catroid.catrobat.newui.db.brigde.SoundBridge;
 import org.catroid.catrobat.newui.dialog.NewItemDialog;
 import org.catroid.catrobat.newui.io.PathInfoFile;
 import org.catroid.catrobat.newui.io.StorageHandler;
 import org.catroid.catrobat.newui.ui.AddItemActivity;
+import org.catroid.catrobat.newui.ui.activity.SpriteDetailActivity;
 import org.catroid.catrobat.newui.ui.adapter.LookAdapter;
+import org.catroid.catrobat.newui.ui.adapter.SoundAdapter;
 import org.catroid.catrobat.newui.ui.recyclerview.adapter.RecyclerViewAdapter;
 import org.catroid.catrobat.newui.ui.featureDiscovery.SpriteViewFeatureDiscoveryManager;
 import org.catroid.catrobat.newui.utils.Utils;
@@ -29,6 +37,7 @@ public class LookListFragment extends TabableFragment<LookInfo>
         implements NewItemDialog.NewItemInterface {
     public static final String TAG = LookListFragment.class.getSimpleName();
     private static final String ARG_SECTION_NUMBER = "section_number_look_list";
+    private SpriteDetailActivity mSpriteDetailActivity;
 
     public static LookListFragment newInstance(int sectionNumber) {
         LookListFragment fragment = new LookListFragment();
@@ -37,6 +46,15 @@ public class LookListFragment extends TabableFragment<LookInfo>
         fragment.setArguments(args);
 
         return fragment;
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View view = super.onCreateView(inflater, container, savedInstanceState);
+
+        mSpriteDetailActivity = (SpriteDetailActivity) getActivity();
+
+        return view;
     }
 
     @Override
@@ -55,21 +73,17 @@ public class LookListFragment extends TabableFragment<LookInfo>
 
     @Override
     public RecyclerViewAdapter<LookInfo> createAdapter() {
-        //TODO change again
-        List<LookInfo> lookInfoList = new ArrayList<LookInfo>();
+        LookBridge bridge = new LookBridge(mSpriteDetailActivity);
+        LookAdapter adapter = new LookAdapter(mSpriteDetailActivity);
 
-        for (int i = 0; i < 5; i++) {
-            lookInfoList.add(new LookInfo("Item " + i, createImage()));
-        }
+        adapter.startLoading(bridge, mSpriteDetailActivity.getSpriteId());
 
-        return new LookAdapter(lookInfoList, R.layout.list_item);
-
+        return adapter;
     }
 
     @Override
     protected void addToList(LookInfo item) {
         mRecyclerViewAdapter.addItem(item);
-
     }
 
     @Override
@@ -105,7 +119,11 @@ public class LookListFragment extends TabableFragment<LookInfo>
         String uniqueLookName = Utils.getUniqueLookName(itemName, mRecyclerViewAdapter.getItems());
 
         PathInfoFile pathInfo = createImage();
-        return new LookInfo(uniqueLookName, pathInfo);
+        LookInfo lookInfo = new LookInfo(uniqueLookName, pathInfo);
+
+        lookInfo.setSpriteId(mSpriteDetailActivity.getSpriteId());
+
+        return lookInfo;
     }
 
     private PathInfoFile createImage() {

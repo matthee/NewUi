@@ -11,7 +11,6 @@ import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
-import org.catroid.catrobat.newui.data.Scene;
 import org.catroid.catrobat.newui.db.fetchrequest.FetchRequest;
 import org.catroid.catrobat.newui.db.brigde.DatabaseBridge;
 import org.catroid.catrobat.newui.db.brigde.PersistableRecord;
@@ -25,6 +24,13 @@ abstract public class DatabaseRecyclerViewAdapter<T extends PersistableRecord> e
     protected DatabaseBridge<T> mBridge;
     private ContentObserver mContentObserver;
 
+    private static int sLoaderId = 0;
+    private int mLoaderId;
+
+    private static synchronized int genLoaderId() {
+        return sLoaderId++;
+    }
+
     public DatabaseRecyclerViewAdapter(int itemLayout, AppCompatActivity context) {
         super(itemLayout);
         
@@ -33,7 +39,7 @@ abstract public class DatabaseRecyclerViewAdapter<T extends PersistableRecord> e
 
     public void startLoading(DatabaseBridge<T> bridge) {
         mBridge = bridge;
-
+        mLoaderId = genLoaderId();
         setupContentObserver();
         restartLoader();
     }
@@ -55,11 +61,15 @@ abstract public class DatabaseRecyclerViewAdapter<T extends PersistableRecord> e
 
     protected void restartLoader() {
         Log.d(TAG, "Restarting loader");
-        mContext.getSupportLoaderManager().restartLoader(0, null, this);
+        mContext.getSupportLoaderManager().restartLoader(mLoaderId, null, this);
     }
 
     @Override
     public Loader<List<T>> onCreateLoader(int id, Bundle args) {
+        if (id != mLoaderId) {
+            return null;
+        }
+
         AsyncTaskLoader<List<T>> loader = new AsyncTaskLoader<List<T>>(mContext) {
             @Override
             protected void onStartLoading() {

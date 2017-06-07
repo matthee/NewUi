@@ -35,9 +35,10 @@ public class SceneActivity extends AppCompatActivity implements BaseRecyclerList
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        setupFromIntent();
+
         setupFAB();
         setupRecyclerListFragment();
-        setupFromIntent();
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 

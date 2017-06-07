@@ -13,12 +13,16 @@ import android.view.View;
 import org.catroid.catrobat.newui.R;
 import org.catroid.catrobat.newui.data.Scene;
 import org.catroid.catrobat.newui.db.brigde.SceneBridge;
+import org.catroid.catrobat.newui.data.Sprite;
+import org.catroid.catrobat.newui.ui.fragment.BaseRecyclerListFragment;
+import org.catroid.catrobat.newui.ui.fragment.BaseRecyclerListFragmentDelegate;
 import org.catroid.catrobat.newui.ui.fragment.SpriteListFragment;
 
 
-public class SpriteActivity extends AppCompatActivity {
+public class SpriteActivity extends AppCompatActivity implements BaseRecyclerListFragmentDelegate<Sprite> {
     public static final String SCENE_ID_KEY = "scene_id";
     public static final String SCENE_NAME_KEY = "scene_name";
+
     private static final String TAG = SpriteActivity.class.getSimpleName();
 
     private long mSceneId;
@@ -33,6 +37,15 @@ public class SpriteActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        setupFromIntent();
+
+        setupFAB();
+        setupRecyclerListFragment();
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+    }
+
+    private void setupFromIntent() {
         Intent intent = getIntent();
         if (intent != null) {
             mSceneId = intent.getLongExtra(SCENE_ID_KEY, -1);
@@ -43,12 +56,6 @@ public class SpriteActivity extends AppCompatActivity {
                 throw new UnsupportedOperationException();
             }
         }
-
-        loadScene();
-        setupFAB();
-        setupRecyclerListFragment();
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
     }
 
     private void loadScene() {
@@ -59,6 +66,7 @@ public class SpriteActivity extends AppCompatActivity {
 
     private void setupRecyclerListFragment() {
         mSpriteFragment = (SpriteListFragment) getSupportFragmentManager().findFragmentById(R.id.sprite_fragment);
+        mSpriteFragment.setBaseRecyclerListFragmentDelegate(this);
     }
 
     private void setupFAB() {
@@ -79,7 +87,6 @@ public class SpriteActivity extends AppCompatActivity {
         return mSceneId;
     }
 
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -94,5 +101,15 @@ public class SpriteActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+		}
+
+    @Override
+    public void onItemClicked(BaseRecyclerListFragment<Sprite> fragment, Sprite sprite) {
+        Intent spriteDetailActivityIntent = new Intent(this, SpriteDetailActivity.class);
+
+        spriteDetailActivityIntent.putExtra(SpriteDetailActivity.SPRITE_ID_KEY, sprite.getId());
+        spriteDetailActivityIntent.putExtra(SpriteDetailActivity.SPRITE_NAME_KEY, sprite.getName());
+
+        startActivity(spriteDetailActivityIntent);
     }
 }

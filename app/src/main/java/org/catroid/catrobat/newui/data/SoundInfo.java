@@ -7,20 +7,24 @@ import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
 
 import org.catroid.catrobat.newui.R;
 import org.catroid.catrobat.newui.copypaste.CopyPasteable;
+import org.catroid.catrobat.newui.db.brigde.PersistableRecord;
 import org.catroid.catrobat.newui.io.PathInfoDirectory;
 import org.catroid.catrobat.newui.io.PathInfoFile;
 import org.catroid.catrobat.newui.io.StorageHandler;
 
 import java.io.Serializable;
 
-public class SoundInfo extends ItemInfo implements Serializable, CopyPasteable {
+public class SoundInfo extends ItemInfo implements Serializable, CopyPasteable, PersistableRecord {
 
     //TODO: uncomment after XStream integration
     //@XStreamAsAttribute
-    private String fileName;
-    private transient PathInfoFile mPathInfoBitmap;
+    private long mId;
+    private String name;
+    private String mFilename;
     private transient PathInfoFile mPathInfo;
     private String duration;
+    private long mSpriteId;
+
 
     public SoundInfo(String name, PathInfoFile pathInfo) {
         super(name);
@@ -28,8 +32,9 @@ public class SoundInfo extends ItemInfo implements Serializable, CopyPasteable {
 
         //TODO what if the mPathInfo's relative path is not the filename alone?
         if (pathInfo != null) {
-            //TODO differentiate between external and local sounds (means: between relative and absolute)
-            fileName = pathInfo.getRelativePath();
+						//TODO differentiate between external and local sounds (means: between relative and absolute)
+
+            mFilename = pathInfo.getRelativePath();
             getDurationFromFile();
         }
     }
@@ -44,11 +49,15 @@ public class SoundInfo extends ItemInfo implements Serializable, CopyPasteable {
         duration = srcSoundInfo.getDuration();
         mPathInfo = StorageHandler.copyFile(srcSoundInfo.getPathInfo());
         //TODO what if the mPathInfo's relative path is not the filename alone?
-        fileName = mPathInfo.getAbsolutePath();
+        mFilename = mPathInfo.getAbsolutePath();
+    }
+
+    public SoundInfo() {
+
     }
 
     public void initializeAfterDeserialize(PathInfoDirectory parent) {
-        mPathInfo = new PathInfoFile(parent, fileName);
+        mPathInfo = new PathInfoFile(parent, mFilename);
     }
 
     public PathInfoFile getPathInfo() {
@@ -113,5 +122,41 @@ public class SoundInfo extends ItemInfo implements Serializable, CopyPasteable {
         options.inPreferredConfig = Bitmap.Config.ARGB_8888;
 
         return BitmapFactory.decodeFile(imagePath, options);
+		}
+
+    public void setId(long id) {
+        mId = id;
+    }
+
+    @Override
+    public long getId() {
+        return mId;
+    }
+
+    @Override
+    public void beforeDestroy() {
+
+    }
+
+    @Override
+    public void afterDestroy() {
+
+    }
+
+    public String getFilename() {
+        return mFilename;
+    }
+
+    public void setFilename(String filename) {
+        mFilename = filename;
+        mPathInfo = new PathInfoFile(StorageHandler.ROOT_DIRECTORY, filename);
+    }
+
+    public void setSpriteId(long spriteId) {
+        mSpriteId = spriteId;
+    }
+
+    public long getSpriteId() {
+        return mSpriteId;
     }
 }
