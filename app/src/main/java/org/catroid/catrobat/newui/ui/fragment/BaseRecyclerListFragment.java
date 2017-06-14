@@ -285,7 +285,6 @@ public abstract class BaseRecyclerListFragment<T extends CopyPasteable> extends 
                 try {
                     T copiedItem = copyItem(item);
                     mRecyclerViewAdapter.insertItem(copiedItem);
-                    Log.d(TAG, "Inserted an item!");
                 } catch (Exception e) {
                     Log.d(TAG, e.getMessage());
                     e.printStackTrace();

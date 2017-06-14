@@ -3,8 +3,10 @@ package org.catroid.catrobat.newui.db.util;
 import android.net.Uri;
 import android.provider.BaseColumns;
 
+import org.catroid.catrobat.newui.data.LookInfo;
 import org.catroid.catrobat.newui.data.Project;
 import org.catroid.catrobat.newui.data.Scene;
+import org.catroid.catrobat.newui.data.SoundInfo;
 import org.catroid.catrobat.newui.data.Sprite;
 
 public class DataContract {
@@ -106,8 +108,8 @@ public class DataContract {
         public static final String COLUMN_FILENAME = "filename";
         public static final String COLUMN_SPRITE_ID = "sprite_id";
 
-        public static Uri getLookUri(Sprite sprite) {
-            return getLookUri(sprite.getId());
+        public static Uri getLookUri(LookInfo lookInfo) {
+            return getLookUri(lookInfo.getId());
         }
 
         public static Uri getLookUri(long id) {
@@ -132,8 +134,8 @@ public class DataContract {
         public static final String COLUMN_FILENAME = "filename";
         public static final String COLUMN_SPRITE_ID = "sprite_id";
 
-        public static Uri getSoundUri(Sprite sprite) {
-            return getSoundUri(sprite.getId());
+        public static Uri getSoundUri(SoundInfo soundInfo) {
+            return getSoundUri(soundInfo.getId());
         }
 
         public static Uri getSoundUri(long id) {
