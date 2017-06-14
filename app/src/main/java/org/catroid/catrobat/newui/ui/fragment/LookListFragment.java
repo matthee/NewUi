@@ -104,7 +104,12 @@ public class LookListFragment extends TabableFragment<LookInfo>
         String name = Utils.getUniqueLookName(item.getName(), mRecyclerViewAdapter.getItems());
         PathInfoFile pathInfo = StorageHandler.copyFile(item.getPathInfo());
 
-        return new LookInfo(name, pathInfo);
+        LookInfo lookInfo = item.clone();
+
+        lookInfo.setName(name);
+        lookInfo.setPathInfo(pathInfo);
+
+        return lookInfo;
     }
 
     @Override

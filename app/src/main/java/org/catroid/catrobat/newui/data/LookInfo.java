@@ -55,6 +55,8 @@ public class LookInfo extends ItemInfo implements Serializable, CopyPasteable, P
 
     public void setPathInfo(PathInfoFile pathInfo) {
         mPathInfo = pathInfo;
+
+        createThumbnail();
     }
 
     public void setAndCopyToPathInfo(PathInfoFile pathInfo) throws Exception {
