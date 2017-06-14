@@ -7,12 +7,14 @@ import android.graphics.drawable.Drawable;
 import android.media.ThumbnailUtils;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
+import android.util.Log;
 
 import org.catroid.catrobat.newui.copypaste.CopyPasteable;
 import org.catroid.catrobat.newui.db.brigde.PersistableRecord;
 import org.catroid.catrobat.newui.io.PathInfoDirectory;
 import org.catroid.catrobat.newui.io.PathInfoFile;
 import org.catroid.catrobat.newui.io.StorageHandler;
+import org.catroid.catrobat.newui.utils.Utils;
 
 import java.io.Serializable;
 
@@ -23,7 +25,6 @@ public class LookInfo extends ItemInfo implements Serializable, CopyPasteable, P
 
     //TODO: uncomment after XStream integration
     //@XStreamAsAttribute
-    private String fileName;
     private transient PathInfoFile mPathInfo;
     private transient int width;
     private transient int height;
@@ -35,7 +36,8 @@ public class LookInfo extends ItemInfo implements Serializable, CopyPasteable, P
         super(name);
         this.mPathInfo = pathInfo;
         //TODO what if the pathInfo's relative path is not the filename alone?
-        fileName = pathInfo.getRelativePath();
+        mFilename = pathInfo.getRelativePath();
+
 
         createThumbnail();
     }
@@ -44,7 +46,7 @@ public class LookInfo extends ItemInfo implements Serializable, CopyPasteable, P
     }
 
     public void initializeAfterDeserialize(PathInfoDirectory parent) {
-        mPathInfo = new PathInfoFile(parent, fileName);
+        mPathInfo = new PathInfoFile(parent, mFilename);
     }
 
     public PathInfoFile getPathInfo() {
@@ -69,7 +71,9 @@ public class LookInfo extends ItemInfo implements Serializable, CopyPasteable, P
     }
 
     public void cleanup() throws Exception {
-        StorageHandler.deleteFile(mPathInfo);
+        if (StorageHandler.fileExists(mPathInfo.getAbsolutePath())) {
+            StorageHandler.deleteFile(mPathInfo);
+        }
     }
 
     @Override
@@ -127,7 +131,13 @@ public class LookInfo extends ItemInfo implements Serializable, CopyPasteable, P
 
     public void setFilename(String filename) {
         mFilename = filename;
-        mPathInfo = new PathInfoFile(StorageHandler.ROOT_DIRECTORY, filename);
+        mPathInfo = new PathInfoFile(Utils.getImageDirectory(), filename);
+
+        createThumbnail();
+    }
+
+    public void loadThumbnail() {
+        createThumbnail();
     }
 
     public String getFilename() {

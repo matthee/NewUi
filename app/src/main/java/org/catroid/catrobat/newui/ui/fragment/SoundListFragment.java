@@ -44,6 +44,8 @@ public class SoundListFragment extends TabableFragment<SoundInfo> {
 
         mSpriteDetailActivity = (SpriteDetailActivity) getActivity();
 
+        setBaseRecyclerListFragmentDelegate(mSpriteDetailActivity);
+
         return view;
     }
 

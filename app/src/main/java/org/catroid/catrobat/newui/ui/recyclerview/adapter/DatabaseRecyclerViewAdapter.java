@@ -122,6 +122,7 @@ abstract public class DatabaseRecyclerViewAdapter<T extends PersistableRecord> e
 
     @Override
     public void insertItem(T item) {
+        Log.d(TAG, "Inserting item...");
         mBridge.insert(item);
     }
 

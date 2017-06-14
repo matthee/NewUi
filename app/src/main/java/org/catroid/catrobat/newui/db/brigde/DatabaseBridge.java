@@ -103,8 +103,6 @@ public abstract class DatabaseBridge<T extends PersistableRecord> {
         Log.d("DBBridge", getCollectionUri().toString());
         Uri itemUri = getContentResolver().insert(getCollectionUri(), serializeForDatabase(item));
 
-
-
         long id = Long.valueOf(itemUri.getLastPathSegment());
 
         item.setId(id);

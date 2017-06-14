@@ -294,6 +294,11 @@ public class ProjectActivity extends AppCompatActivity implements BaseRecyclerLi
         startActivity(scenesActivityIntent);
     }
 
+    @Override
+    public DialogType getDialogType() {
+        return DialogType.BASE_DIALOG;
+    }
+
     private void updateProjectLastAccess(Project project) {
         ProjectBridge bridge = new ProjectBridge(this);
 

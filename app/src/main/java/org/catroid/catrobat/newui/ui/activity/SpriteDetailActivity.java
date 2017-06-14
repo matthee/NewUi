@@ -14,9 +14,12 @@ import android.view.MenuInflater;
 import android.view.View;
 
 import org.catroid.catrobat.newui.R;
+import org.catroid.catrobat.newui.copypaste.CopyPasteable;
 import org.catroid.catrobat.newui.ui.adapter.SpriteViewPagerAdapter;
+import org.catroid.catrobat.newui.ui.fragment.BaseRecyclerListFragment;
+import org.catroid.catrobat.newui.ui.fragment.BaseRecyclerListFragmentDelegate;
 
-public class SpriteDetailActivity extends AppCompatActivity {
+public class SpriteDetailActivity extends AppCompatActivity implements BaseRecyclerListFragmentDelegate {
 
     public static final String TAG = SpriteDetailActivity.class.getSimpleName();
     public static final String SPRITE_ID_KEY = "scene_id";
@@ -88,5 +91,15 @@ public class SpriteDetailActivity extends AppCompatActivity {
 
     public long getSpriteId() {
         return mSpriteId;
+    }
+
+    @Override
+    public void onItemClicked(BaseRecyclerListFragment fragment, CopyPasteable item) {
+        // Ignore
+    }
+
+    @Override
+    public DialogType getDialogType() {
+        return DialogType.EXTENDED_DIALOG;
     }
 }

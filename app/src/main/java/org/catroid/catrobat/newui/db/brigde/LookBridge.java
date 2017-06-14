@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
+import android.util.Log;
 
 import org.catroid.catrobat.newui.data.LookInfo;
 import org.catroid.catrobat.newui.db.util.DataContract;
@@ -33,6 +34,13 @@ public class LookBridge extends DatabaseBridge<LookInfo> {
         lookInfo.setName(unserializeString(cursor, LookEntry.COLUMN_NAME));
         lookInfo.setFilename(unserializeString(cursor, LookEntry.COLUMN_FILENAME));
         lookInfo.setSpriteId(unserializeLong(cursor, LookEntry.COLUMN_SPRITE_ID));
+
+
+        Log.d("look bridge", "OFN: "+ unserializeString(cursor, LookEntry.COLUMN_FILENAME));
+        Log.d("look bridge", "FN: "+ lookInfo.getFilename());
+        Log.d("look bridge", "Rel: "+ lookInfo.getPathInfo().getRelativePath());
+        Log.d("look bridge", "Abs: "+ lookInfo.getPathInfo().getAbsolutePath());
+
 
         return lookInfo;
     }

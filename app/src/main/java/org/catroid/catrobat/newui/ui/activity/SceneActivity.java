@@ -89,6 +89,11 @@ public class SceneActivity extends AppCompatActivity implements BaseRecyclerList
     }
 
     @Override
+    public DialogType getDialogType() {
+        return DialogType.BASE_DIALOG;
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             // Respond to the action bar's Up/Home button

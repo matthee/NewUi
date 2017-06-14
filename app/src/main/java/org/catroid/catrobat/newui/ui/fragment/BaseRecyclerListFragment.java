@@ -184,15 +184,20 @@ public abstract class BaseRecyclerListFragment<T extends CopyPasteable> extends 
     public abstract RecyclerViewAdapter<T> createAdapter();
 
     public void onAddButtonClicked() {
-        ArrayList<String> names = new ArrayList<>();
-        for(T i : mRecyclerViewAdapter.getItems()) {
-            names.add(getItemName(i));
-        }
+        if (mBaseRecyclerListFragmentDelegate.getDialogType() == BaseRecyclerListFragmentDelegate.DialogType.BASE_DIALOG) {
+            showNewItemDialog();
+        } else {
 
-        Intent intent = new Intent(getContext(), AddItemActivity.class);
-        intent.putExtra("names_list", names);
-        intent.putExtra("caller_tag", getString(getTabNameResource()));
-        startActivityForResult(intent, ADD_NEW_ITEM_REQUEST);
+            ArrayList<String> names = new ArrayList<>();
+            for (T i : mRecyclerViewAdapter.getItems()) {
+                names.add(getItemName(i));
+            }
+
+            Intent intent = new Intent(getContext(), AddItemActivity.class);
+            intent.putExtra("names_list", names);
+            intent.putExtra("caller_tag", getString(getTabNameResource()));
+            startActivityForResult(intent, ADD_NEW_ITEM_REQUEST);
+        }
     }
 
     @Override

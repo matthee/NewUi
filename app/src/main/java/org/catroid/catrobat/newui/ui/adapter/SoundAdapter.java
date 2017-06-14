@@ -7,17 +7,13 @@ import android.view.View;
 
 import org.catroid.catrobat.newui.R;
 import org.catroid.catrobat.newui.data.SoundInfo;
-import org.catroid.catrobat.newui.db.brigde.SceneBridge;
 import org.catroid.catrobat.newui.db.brigde.SoundBridge;
 import org.catroid.catrobat.newui.db.fetchrequest.ChildCollectionFetchRequest;
 import org.catroid.catrobat.newui.db.fetchrequest.FetchRequest;
 import org.catroid.catrobat.newui.db.util.DataContract;
 import org.catroid.catrobat.newui.ui.recyclerview.adapter.DatabaseRecyclerViewAdapter;
 import org.catroid.catrobat.newui.ui.recyclerview.viewholder.ListViewHolder;
-import org.catroid.catrobat.newui.ui.recyclerview.adapter.RecyclerViewAdapter;
 import org.catroid.catrobat.newui.ui.recyclerview.viewholder.RecyclerViewHolder;
-
-import java.util.ArrayList;
 
 public class SoundAdapter extends DatabaseRecyclerViewAdapter<SoundInfo> {
 
@@ -45,7 +41,7 @@ public class SoundAdapter extends DatabaseRecyclerViewAdapter<SoundInfo> {
         ListViewHolder listViewHolder = (ListViewHolder) holder;
         Resources res = listViewHolder.mItemView.getResources();
 
-        String durationDescription = item.getDuration();
+        String durationDescription = item.getDurationString();
         if (durationDescription == null) {
             durationDescription = res.getString(R.string.unknown_duration);
         }

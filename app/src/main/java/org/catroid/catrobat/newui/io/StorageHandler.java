@@ -138,7 +138,7 @@ public final class StorageHandler {
     private static void deleteFile(String srcPath) throws IOException {
         File file = new File(srcPath);
         if (!file.exists()) {
-            throw new FileNotFoundException("File: " + srcPath + "does not exist.");
+            throw new FileNotFoundException("File: " + srcPath + " does not exist.");
         }
         if (!file.delete()) {
             throw new IOException("File: " + srcPath + "could not be deleted");

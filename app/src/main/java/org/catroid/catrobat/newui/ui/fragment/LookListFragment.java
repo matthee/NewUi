@@ -54,6 +54,8 @@ public class LookListFragment extends TabableFragment<LookInfo>
 
         mSpriteDetailActivity = (SpriteDetailActivity) getActivity();
 
+        setBaseRecyclerListFragmentDelegate(mSpriteDetailActivity);
+
         return view;
     }
 
@@ -83,7 +85,8 @@ public class LookListFragment extends TabableFragment<LookInfo>
 
     @Override
     protected void addToList(LookInfo item) {
-        mRecyclerViewAdapter.addItem(item);
+        item.setSpriteId(mSpriteDetailActivity.getSpriteId());
+        mRecyclerViewAdapter.insertItem(item);
     }
 
     @Override

@@ -112,4 +112,9 @@ public class SpriteActivity extends AppCompatActivity implements BaseRecyclerLis
 
         startActivity(spriteDetailActivityIntent);
     }
+
+    @Override
+    public DialogType getDialogType() {
+        return DialogType.BASE_DIALOG;
+    }
 }
